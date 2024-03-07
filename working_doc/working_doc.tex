@@ -1,0 +1,99 @@
+\documentclass[12pt,reqno, a4paper]{amsart}
+
+
+
+% symbols and fonts 
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{tikz-cd}
+
+% ordering and geometry
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{geometry}
+
+% quality of life 
+\usepackage[ color = blue!20]{todonotes}
+\usepackage{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
+% choosing font
+\usepackage{libertine}
+\usepackage[T1]{fontenc}
+
+
+\setcounter{section}{0} %starts on section 1
+\numberwithin{equation}{section}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+
+
+
+% some quality-of-life commands 
+
+% matrix commands 
+\newcommand{\tr}{\mathrm{tr}}
+% blackboard bolds 
+\newcommand{\C}{\mathbb{C}}
+
+
+\title{Formalising $\det(e^A) = e^{\tr(A)}$ in Lean} 
+\author{}
+\date{}
+
+
+\begin{document}
+\maketitle
+
+\section{The non-formal proof}
+
+We list some facts that the proof follows from. The matrix $A$ is assumed to have entries in $\C$ and $P$ is an invertible matrix with entries in $\C$. 
+
+\begin{enumerate}
+	\item For all $A,P$, we have $\det(e^{PAP^{-1}}) = \det(e^A)$.
+	\item For every matrix $A$, there is an invertible $P$ such that $PAP^{-1} = U$, with $U$ upper-triangular.
+	\item $\det(U) = \prod (U)_{(i,i)}$.
+	\item If $U$ is upper-triangular, then $(e^U)_{(i,i)} = e^{(U)_{(i,i)}}$. 
+	\item For complex numbers $a$ and $b$, we have $e^{a+b} = e^a e^b$.
+	\item For all $A,P$, we have $\tr(PAP^{-1}) = \tr(A)$. 
+\end{enumerate}
+
+The proof now follows in the following argument: 
+\begin{proof}
+	\begin{align*}
+		\det(e^A) & = \det(e^{PAP^{-1}}) & \text{by 1} \\ 
+		& = \det(e^U) & \text{by 2} \\
+		& = \prod e^{(U)_{(i,i)}} & \text{by 3 and 4} \\
+		& = e^{\sum U_{(i,i)}} & \text{by 5} \\
+		& = e^{\tr(U)} & \text{by definition of trace} \\ 
+		& = e^{\tr(PAP^{-1})} & \text{by 2 again} \\ 
+		& = e^{\tr(A)} & \text{by 6}
+	\end{align*}
+\end{proof}
+
+We list the difficulties of the various parts. 
+
+\begin{enumerate}
+	\item This already exists in Lean, in \texttt{Matrix.exp\_conj}
+	\item This will need proving (and might be hard)
+	\item This should follow from \texttt{Matrix.det\_succ\_column}
+	\item This will need proving 
+	\item This exists somewhere (to do: find it!)
+	\item This should follow from \texttt{Matrix.trace\_mul\_cycle}
+\end{enumerate}
+
+
+
+
+
+
+
+\end{document}
