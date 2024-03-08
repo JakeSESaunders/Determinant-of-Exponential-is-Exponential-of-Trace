@@ -58,36 +58,37 @@
 We list some facts that the proof follows from. The matrix $A$ is assumed to have entries in $\C$ and $P$ is an invertible matrix with entries in $\C$. 
 
 \begin{enumerate}
-	\item For all $A,P$, we have $\det(e^{PAP^{-1}}) = \det(e^A)$.
-	\item For every matrix $A$, there is an invertible $P$ such that $PAP^{-1} = U$, with $U$ upper-triangular.
+	\item For all $M,P$, we have $\det(e^M) = \det(Pe^MP^{-1})$.
+	\item For every matrix $A$, there is an invertible $P$ such that $A = PUP^{-1}$, with $U$ upper-triangular.
 	\item $\det(U) = \prod (U)_{(i,i)}$.
 	\item If $U$ is upper-triangular, then $(e^U)_{(i,i)} = e^{(U)_{(i,i)}}$. 
 	\item For complex numbers $a$ and $b$, we have $e^{a+b} = e^a e^b$.
-	\item For all $A,P$, we have $\tr(PAP^{-1}) = \tr(A)$. 
+	\item For all $M,P$, we have $\tr(PMP^{-1}) = \tr(M)$.
+	\item For all $M, P$, we have $\det(PMP^{-1}) = \det(M)$. 
 \end{enumerate}
 
 The proof now follows in the following argument: 
 \begin{proof}
 	\begin{align*}
-		\det(e^A) & = \det(e^{PAP^{-1}}) & \text{by 1} \\ 
-		& = \det(e^U) & \text{by 2} \\
+		\det(e^A) & = \det(Pe^UP^{-1}) & \text{by 1 and 2} \\ 
+		& = \det(e^U) & \text{by 7} \\
 		& = \prod e^{(U)_{(i,i)}} & \text{by 3 and 4} \\
 		& = e^{\sum U_{(i,i)}} & \text{by 5} \\
 		& = e^{\tr(U)} & \text{by definition of trace} \\ 
-		& = e^{\tr(PAP^{-1})} & \text{by 2 again} \\ 
-		& = e^{\tr(A)} & \text{by 6}
+		& = e^{\tr(PUP^{-1})} & \text{by 6} \\ 
+		& = e^{\tr(A)} & \text{by 2 again}
 	\end{align*}
 \end{proof}
 
 We list the difficulties of the various parts. 
 
 \begin{enumerate}
-	\item This already exists in Lean, in \texttt{Matrix.exp\_conj}
-	\item This will need proving (and might be hard)
-	\item This should follow from \texttt{Matrix.det\_succ\_column}
-	\item This will need proving 
-	\item This exists somewhere (to do: find it!)
-	\item This should follow from \texttt{Matrix.trace\_mul\_cycle}
+	\item This already exists in Lean, in \texttt{Matrix.exp\_conj}.
+	\item This will need proving. This can be done by showing that no minimal counterexample exists, using the fact that every matrix over with entries in $\C$ has an eigenvector.
+	\item This can be proven inductively using \texttt{Matrix.det\_succ\_column}.
+	\item This will need proving.
+	\item This should follow from \texttt{Matrix.trace\_mul\_cycle}, since applying one cyclic permutation allows us to cancel $P$ with its inverse.
+	\item This should be in Lean (what is it called?).
 \end{enumerate}
 
 
